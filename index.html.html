@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Amara Osei | Statistical & BI Consultant</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --orange:#FF6B00;--orange2:#FF8C38;--orange3:#FFB347;
+  --teal:#00BFA5;--teal2:#00897B;
+  --purple:#7C3AED;--purple2:#A855F7;
+  --pink:#EC4899;--blue:#2563EB;--blue2:#38BDF8;
+  --green:#10B981;--red:#EF4444;--yellow:#F59E0B;
+  --dark:#0A0A0F;--dark2:#111118;--dark3:#1A1A24;--dark4:#22222E;
+  --glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.08);
+  --text:#F0F0FF;--muted:rgba(240,240,255,0.55);--line:rgba(255,255,255,0.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Syne',sans-serif;background:var(--dark);color:var(--text);overflow-x:hidden;cursor:none;}
+#cursor{position:fixed;width:14px;height:14px;border-radius:50%;background:var(--orange);pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:screen;}
+#cursor-ring{position:fixed;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,107,0,0.4);pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:transform .18s ease,width .3s,height .3s;}
+#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:1;}
+nav,section,footer,.ticker-wrap{position:relative;z-index:2;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:68px;background:linear-gradient(135deg,#FF6B00 0%,#FF9500 35%,#FF6B00 65%,#E05000 100%);background-size:300% 300%;animation:navAnim 6s ease infinite;box-shadow:0 4px 30px rgba(255,107,0,0.5);}
+@keyframes navAnim{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:#fff;text-decoration:none;text-shadow:0 2px 8px rgba(0,0,0,0.2);}
+.nav-links{display:flex;gap:.3rem;list-style:none;align-items:center;}
+.nav-links a{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.88);text-decoration:none;padding:.42rem .85rem;border-radius:4px;transition:background .2s;}
+.nav-links a:hover{background:rgba(255,255,255,.18);color:#fff;}
+.nav-cta{background:rgba(0,0,0,.28)!important;border:1px solid rgba(255,255,255,.35)!important;}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:100px 4rem 5rem;overflow:hidden;}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:4rem;align-items:center;max-width:1300px;margin:0 auto;width:100%;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.8rem;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--orange2);margin-bottom:1.4rem;}
+.hero-eyebrow::before{content:'';width:2rem;height:2px;background:linear-gradient(90deg,var(--orange),var(--orange3));border-radius:2px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,5.5vw,5.5rem);font-weight:900;line-height:1.0;margin-bottom:1.2rem;}
+.hero-title .l1{color:var(--text);display:block;}
+.hero-title .l2{display:block;background:linear-gradient(135deg,var(--orange) 0%,var(--orange3) 35%,var(--pink) 65%,var(--purple2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:300% 300%;animation:gradShift 4s ease infinite;}
+.hero-title .l3{color:var(--teal);font-style:italic;display:block;}
+@keyframes gradShift{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.hero-sub{font-size:1.02rem;line-height:1.8;color:var(--muted);max-width:520px;margin-bottom:2.2rem;}
+.hero-badges{display:flex;flex-wrap:wrap;gap:.55rem;margin-bottom:2.2rem;}
+.badge{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.07em;padding:.32rem .75rem;border-radius:100px;border:1px solid;}
+.bo{color:var(--orange2);border-color:rgba(255,140,56,.38);background:rgba(255,107,0,.1);}
+.bt{color:var(--teal);border-color:rgba(0,191,165,.35);background:rgba(0,191,165,.1);}
+.bp{color:var(--purple2);border-color:rgba(168,85,247,.35);background:rgba(124,58,237,.1);}
+.bb{color:var(--blue2);border-color:rgba(56,189,248,.35);background:rgba(37,99,235,.1);}
+.bk{color:var(--pink);border-color:rgba(236,72,153,.35);background:rgba(236,72,153,.1);}
+.bg{color:var(--green);border-color:rgba(16,185,129,.35);background:rgba(16,185,129,.1);}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn-fire{font-family:'JetBrains Mono',monospace;font-size:.73rem;letter-spacing:.1em;text-transform:uppercase;background:linear-gradient(135deg,var(--orange),var(--pink));color:#fff;padding:.9rem 2.2rem;border:none;border-radius:6px;cursor:none;text-decoration:none;display:inline-block;box-shadow:0 4px 20px rgba(255,107,0,.4);transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;}
+.btn-fire:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(255,107,0,.55);}
+.btn-ghost{font-family:'JetBrains Mono',monospace;font-size:.73rem;letter-spacing:.1em;text-transform:uppercase;background:var(--glass2);color:var(--text);padding:.9rem 2.2rem;border:1px solid var(--line);border-radius:6px;cursor:none;text-decoration:none;display:inline-block;backdrop-filter:blur(10px);transition:all .2s;}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange);transform:translateY(-2px);}
+
+/* HERO DASHBOARD */
+.hero-dashboard{background:var(--dark3);border:1px solid var(--line);border-radius:16px;padding:1.5rem;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+.hero-dashboard::before{content:'';position:absolute;inset:-1px;border-radius:16px;padding:1px;background:linear-gradient(135deg,var(--orange),var(--purple),var(--teal),var(--blue));background-size:300% 300%;animation:borderFlow 4s ease infinite;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;}
+@keyframes borderFlow{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+.dash-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1rem;padding-bottom:.75rem;border-bottom:1px solid var(--line);}
+.dash-title{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+.live-dot{display:flex;align-items:center;gap:.4rem;font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--green);}
+.live-dot::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:livePulse 1.4s ease infinite;}
+@keyframes livePulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.8);}}
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:.9rem;}
+.kpi-card{background:var(--dark4);border-radius:8px;padding:.85rem .75rem;text-align:center;border:1px solid var(--line);transition:border-color .3s;}
+.kpi-card:hover{border-color:var(--orange);}
+.kpi-val{font-family:'Playfair Display',serif;font-size:1.45rem;font-weight:700;display:block;}
+.kpi-label{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-top:.15rem;}
+.kpi-delta{font-family:'JetBrains Mono',monospace;font-size:.58rem;display:block;margin-top:.12rem;}
+.pos{color:var(--green);}.neg{color:var(--red);}
+.mini-bars{display:flex;align-items:flex-end;gap:4px;height:58px;margin-bottom:.9rem;}
+.donut-row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;}
+.donut-card{background:var(--dark4);border-radius:8px;padding:.75rem;display:flex;align-items:center;gap:.75rem;border:1px solid var(--line);}
+.donut-pct{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;display:block;}
+.donut-lbl{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);display:block;margin-top:.1rem;}
+
+/* TICKER */
+.ticker-wrap{background:linear-gradient(90deg,var(--orange) 0%,var(--pink) 25%,var(--purple) 50%,var(--blue) 75%,var(--teal) 100%);padding:.78rem 0;overflow:hidden;white-space:nowrap;}
+.ticker-inner{display:inline-flex;animation:ticker 30s linear infinite;gap:3rem;}
+.ticker-item{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.9);display:inline-flex;align-items:center;gap:.75rem;}
+.ticker-item span{opacity:.6;}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* SECTION SHARED */
+.sec{padding:7rem 4rem;max-width:1300px;margin:0 auto;}
+.full-sec{padding:7rem 4rem;max-width:100%;position:relative;z-index:2;}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--orange);margin-bottom:.75rem;display:flex;align-items:center;gap:.8rem;}
+.section-tag::before{content:'';width:1.5rem;height:2px;background:linear-gradient(90deg,var(--orange),var(--pink));border-radius:2px;}
+.section-heading{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.4vw,3.2rem);font-weight:900;line-height:1.1;margin-bottom:1.4rem;color:var(--text);}
+.grad-text-o{background:linear-gradient(135deg,var(--orange),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.grad-text-b{background:linear-gradient(135deg,var(--blue2),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.grad-text-t{background:linear-gradient(135deg,var(--teal),var(--blue2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.grad-text-p{background:linear-gradient(135deg,var(--pink),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.grad-text-pu{background:linear-gradient(135deg,var(--orange),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* SERVICES */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:3.2rem;}
+.service-card{background:var(--dark3);border:1px solid var(--line);border-radius:12px;padding:2.1rem;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s;cursor:none;}
+.service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;}
+.sc-or::before{background:linear-gradient(90deg,var(--orange),var(--orange3));}
+.sc-te::before{background:linear-gradient(90deg,var(--teal2),var(--teal));}
+.sc-pu::before{background:linear-gradient(90deg,var(--purple),var(--purple2));}
+.sc-bl::before{background:linear-gradient(90deg,var(--blue),var(--blue2));}
+.sc-pk::before{background:linear-gradient(90deg,var(--pink),var(--orange2));}
+.sc-gr::before{background:linear-gradient(90deg,var(--green),var(--teal));}
+.service-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.4);}
+.service-num{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.2em;color:var(--muted);margin-bottom:.7rem;}
+.service-icon{font-size:1.9rem;margin-bottom:.85rem;display:block;}
+.service-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:.6rem;}
+.service-desc{font-size:.86rem;line-height:1.7;color:var(--muted);margin-bottom:1.1rem;}
+.service-tools{display:flex;flex-wrap:wrap;gap:.35rem;}
+.tool-tag{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.07em;padding:.18rem .5rem;border-radius:100px;border:1px solid var(--line);color:var(--muted);}
+
+/* BI & DAX */
+.bi-layout{display:grid;grid-template-columns:1fr 1fr;gap:4.5rem;align-items:start;margin-top:3.2rem;}
+.bi-features{display:flex;flex-direction:column;gap:1.3rem;}
+.bi-feature{display:flex;gap:1.1rem;align-items:flex-start;padding:1.4rem;background:var(--glass);border:1px solid var(--line);border-radius:10px;transition:all .3s;cursor:none;}
+.bi-feature:hover{background:var(--glass2);border-color:var(--blue2);transform:translateX(6px);}
+.bi-feature-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.fib{background:rgba(37,99,235,.15);}.fip{background:rgba(124,58,237,.15);}.fit{background:rgba(0,191,165,.15);}.fio{background:rgba(255,107,0,.15);}
+.bi-feature-text h3{font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;color:var(--text);margin-bottom:.32rem;}
+.bi-feature-text p{font-size:.84rem;line-height:1.65;color:var(--muted);}
+.dax-panel{background:#0D1117;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+.dax-panel-hdr{background:var(--dark3);padding:.75rem 1.1rem;display:flex;align-items:center;gap:.55rem;border-bottom:1px solid var(--line);}
+.dax-dot{width:10px;height:10px;border-radius:50%;}
+.dax-dot:nth-child(1){background:#FF5F57;}.dax-dot:nth-child(2){background:#FFBD2E;}.dax-dot:nth-child(3){background:#28CA41;}
+.dax-filename{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);margin-left:.5rem;}
+.dax-tabs{display:flex;border-bottom:1px solid var(--line);background:var(--dark3);}
+.dax-tab{font-family:'JetBrains Mono',monospace;font-size:.6rem;padding:.55rem .95rem;color:var(--muted);cursor:none;border-bottom:2px solid transparent;transition:all .2s;letter-spacing:.04em;}
+.dax-tab.active{color:var(--blue2);border-bottom-color:var(--blue2);background:rgba(56,189,248,.05);}
+.dax-tab:hover:not(.active){color:var(--text);}
+.dax-code{padding:1.4rem;font-family:'JetBrains Mono',monospace;font-size:.76rem;line-height:1.8;overflow-x:auto;white-space:pre;}
+.dc{color:#6A9955;}.dk{color:#569CD6;}.df{color:#DCDCAA;}.ds{color:#CE9178;}.do{color:#D4D4D4;}.dv{color:#9CDCFE;}.dn{color:#B5CEA8;}.dm{color:#4EC9B0;}
+.bi-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.55rem;}
+.bi-kpi{background:var(--dark4);border-radius:6px;padding:.65rem .5rem;text-align:center;border:1px solid var(--line);}
+.bi-kpi-n{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;display:block;}
+.bi-kpi-l{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);display:block;}
+
+/* EXPERTISE */
+.expertise-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3.2rem;align-items:start;}
+.skills-list{display:flex;flex-direction:column;gap:.95rem;}
+.skill-item{display:flex;flex-direction:column;gap:.35rem;}
+.skill-header{display:flex;justify-content:space-between;align-items:baseline;}
+.skill-name{font-family:'JetBrains Mono',monospace;font-size:.71rem;letter-spacing:.05em;color:var(--text);}
+.skill-pct{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:var(--orange2);}
+.skill-bar-track{height:5px;background:var(--glass2);border-radius:3px;overflow:hidden;}
+.skill-bar-fill{height:100%;border-radius:3px;width:0;transition:width 1.6s cubic-bezier(.25,1,.5,1);}
+.tool-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;}
+.tool-card{background:var(--dark3);border:1px solid var(--line);border-radius:10px;padding:1.15rem;text-align:center;transition:all .3s;cursor:none;position:relative;overflow:hidden;}
+.tool-card::after{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;}
+.tool-card:hover{transform:translateY(-4px);}.tool-card:hover::after{opacity:.1;}
+.tc-r::after{background:#276DC3;}.tc-py::after{background:#3776AB;}.tc-pbi::after{background:#F2C811;}
+.tc-sql::after{background:#E38C00;}.tc-tb::after{background:#E8762C;}.tc-sp::after{background:#DD0000;}
+.tc-st::after{background:#1A568E;}.tc-sa::after{background:#00599C;}.tc-ex::after{background:#217346;}
+.tool-logo{font-size:1.45rem;display:block;margin-bottom:.35rem;position:relative;z-index:1;}
+.tool-name{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;position:relative;z-index:1;}
+
+/* TESTIMONIALS */
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:3.2rem;}
+.testimonial-card{background:var(--dark3);border:1px solid var(--line);border-radius:14px;padding:1.9rem;position:relative;transition:all .3s;cursor:none;overflow:hidden;}
+.testimonial-card::before{content:'';position:absolute;inset:-1px;border-radius:14px;padding:1px;opacity:0;transition:opacity .3s;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;}
+.tc-or::before{background:linear-gradient(135deg,var(--orange),var(--pink));}
+.tc-te::before{background:linear-gradient(135deg,var(--teal),var(--blue2));}
+.tc-pu::before{background:linear-gradient(135deg,var(--purple),var(--pink));}
+.testimonial-card:hover::before{opacity:1;}.testimonial-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.4);}
+.stars{color:var(--orange2);font-size:.88rem;margin-bottom:.9rem;letter-spacing:2px;}
+.testimonial-text{font-size:.88rem;line-height:1.8;color:var(--muted);font-style:italic;margin-bottom:1.4rem;}
+.testimonial-author{display:flex;align-items:center;gap:.75rem;}
+.author-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;color:#fff;flex-shrink:0;}
+.av-o{background:linear-gradient(135deg,var(--orange),var(--pink));}
+.av-t{background:linear-gradient(135deg,var(--teal2),var(--blue2));}
+.av-p{background:linear-gradient(135deg,var(--purple),var(--purple2));}
+.author-name{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);display:block;}
+.author-role{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.06em;color:var(--muted);display:block;margin-top:.1rem;}
+
+/* CONTACT */
+.contact-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;margin-top:3.2rem;align-items:start;}
+.contact-info p{font-size:.98rem;line-height:1.8;color:var(--muted);margin-bottom:1.8rem;}
+.contact-details{display:flex;flex-direction:column;gap:.9rem;}
+.contact-detail{display:flex;align-items:center;gap:.9rem;padding:.9rem 1.1rem;background:var(--glass);border:1px solid var(--line);border-radius:8px;transition:all .2s;cursor:none;}
+.contact-detail:hover{border-color:var(--orange);background:rgba(255,107,0,.05);}
+.cd-icon{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--orange),var(--pink));display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.cd-label{font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;}
+.cd-value{font-family:'Syne',sans-serif;font-size:.83rem;color:var(--text);display:block;}
+.contact-form{display:flex;flex-direction:column;gap:.95rem;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.95rem;}
+.form-field{display:flex;flex-direction:column;gap:.38rem;}
+.form-field label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.form-field input,.form-field select,.form-field textarea{background:var(--dark3);border:1px solid var(--line);padding:.82rem .95rem;font-family:'Syne',sans-serif;font-size:.87rem;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s;border-radius:8px;appearance:none;-webkit-appearance:none;}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,107,0,.12);}
+.form-field textarea{resize:vertical;min-height:115px;}
+.form-field select option{background:var(--dark3);}
+.btn-submit{font-family:'JetBrains Mono',monospace;font-size:.73rem;letter-spacing:.12em;text-transform:uppercase;background:linear-gradient(135deg,var(--orange),var(--pink),var(--purple));background-size:200% 200%;animation:gradShift 3s ease infinite;color:#fff;padding:.95rem 2.4rem;border:none;border-radius:8px;cursor:none;align-self:flex-start;box-shadow:0 4px 20px rgba(255,107,0,.3);transition:all .3s;}
+.btn-submit:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(255,107,0,.5);}
+
+/* FOOTER */
+footer{background:var(--dark);border-top:1px solid var(--line);padding:2.4rem 4rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;position:relative;z-index:2;}
+.footer-logo{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:900;background:linear-gradient(135deg,var(--orange),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.footer-links{display:flex;gap:1.4rem;list-style:none;}
+.footer-links a{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;}
+.footer-links a:hover{color:var(--orange);}
+.footer-copy{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--muted);}
+
+/* PARTICLES */
+.particle{position:fixed;border-radius:50%;pointer-events:none;z-index:1;animation:floatP linear infinite;}
+@keyframes floatP{from{transform:translateY(110vh) rotate(0deg);opacity:0;}10%{opacity:1;}90%{opacity:1;}to{transform:translateY(-10vh) rotate(360deg);opacity:0;}}
+
+/* FADE IN */
+.fade-in{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+
+@media(max-width:900px){
+  nav{padding:0 1.5rem;}.nav-links{display:none;}
+  .hero-grid,.bi-layout,.expertise-grid,.contact-layout{grid-template-columns:1fr;}
+  .services-grid,.testimonials-grid{grid-template-columns:1fr;}
+  #hero,.sec,.full-sec{padding:4.5rem 1.5rem;}
+  footer{flex-direction:column;text-align:center;padding:2rem;}
+  .bi-kpi-row{grid-template-columns:repeat(2,1fr);}
+  .kpi-row{grid-template-columns:repeat(3,1fr);}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Dr. Amara Osei · Stats & BI</a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#bi-dax">BI & DAX</a></li>
+    <li><a href="#expertise">Expertise</a></li>
+    <li><a href="#testimonials">Clients</a></li>
+    <li><a href="#contact" class="nav-cta">Book a Call</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-eyebrow">Statistical Consultant · Data Analyst · BI Expert</div>
+      <h1 class="hero-title">
+        <span class="l1">Turning Raw</span>
+        <span class="l2">Data & Numbers</span>
+        <span class="l3">Into Strategy</span>
+      </h1>
+      <p class="hero-sub">Rigorous statistical analysis, Power BI dashboards, and DAX mastery — helping organisations across Africa, Europe, and Asia make smarter, evidence-based decisions.</p>
+      <div class="hero-badges">
+        <span class="badge bo">Statistical Modelling</span>
+        <span class="badge bt">Power BI</span>
+        <span class="badge bp">DAX Formulas</span>
+        <span class="badge bb">Predictive Analytics</span>
+        <span class="badge bk">R · Python</span>
+        <span class="badge bg">Clinical Trials</span>
+      </div>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-fire">Start a Project →</a>
+        <a href="#bi-dax" class="btn-ghost">Explore BI & DAX</a>
+      </div>
+    </div>
+
+    <div class="hero-dashboard fade-in">
+      <div class="dash-hdr">
+        <span class="dash-title">📊 Live Analytics Dashboard</span>
+        <span class="live-dot">Live</span>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <span class="kpi-val" style="color:var(--orange2)" id="kpi1">—</span>
+          <span class="kpi-label">Accuracy</span>
+          <span class="kpi-delta pos" id="kpi1d">+2.4%</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-val" style="color:var(--teal)" id="kpi2">—</span>
+          <span class="kpi-label">Projects</span>
+          <span class="kpi-delta pos">↑ Active</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-val" style="color:var(--purple2)" id="kpi3">—</span>
+          <span class="kpi-label">p-value</span>
+          <span class="kpi-delta pos">Significant</span>
+        </div>
+      </div>
+      <div class="dash-title" style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem;">Monthly Insight Score</div>
+      <div class="mini-bars" id="heroBarChart"></div>
+      <div class="donut-row">
+        <div class="donut-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" style="flex-shrink:0">
+            <circle cx="24" cy="24" r="17" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="5"/>
+            <circle cx="24" cy="24" r="17" fill="none" stroke="url(#dg1)" stroke-width="5" stroke-dasharray="78 29" stroke-linecap="round" transform="rotate(-90 24 24)">
+              <animate attributeName="stroke-dasharray" from="0 107" to="78 29" dur="1.5s" fill="freeze"/>
+            </circle>
+            <defs><linearGradient id="dg1" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#FF6B00"/><stop offset="100%" stop-color="#EC4899"/></linearGradient></defs>
+          </svg>
+          <div><span class="donut-pct" style="color:var(--orange2)">73%</span><span class="donut-lbl">Model Fit</span></div>
+        </div>
+        <div class="donut-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" style="flex-shrink:0">
+            <circle cx="24" cy="24" r="17" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="5"/>
+            <circle cx="24" cy="24" r="17" fill="none" stroke="url(#dg2)" stroke-width="5" stroke-dasharray="94 13" stroke-linecap="round" transform="rotate(-90 24 24)">
+              <animate attributeName="stroke-dasharray" from="0 107" to="94 13" dur="1.8s" fill="freeze"/>
+            </circle>
+            <defs><linearGradient id="dg2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#00BFA5"/><stop offset="100%" stop-color="#38BDF8"/></linearGradient></defs>
+          </svg>
+          <div><span class="donut-pct" style="color:var(--teal)">88%</span><span class="donut-lbl">Client Sat.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-inner" id="tickerEl"></div>
+</div>
+
+<!-- SERVICES -->
+<div style="position:relative;z-index:2;background:var(--dark2);">
+<div class="full-sec" id="services">
+  <div style="max-width:1300px;margin:0 auto;">
+    <div class="section-tag fade-in">What I Offer</div>
+    <h2 class="section-heading fade-in">Statistical & Analytics <span class="grad-text-o">Services</span></h2>
+    <div class="services-grid">
+      <div class="service-card sc-or fade-in"><span class="service-icon">📐</span><div class="service-num">01</div><div class="service-name">Study Design & Sampling</div><p class="service-desc">Experiments, surveys, and observational studies with rigorous power analysis, randomisation strategies, and sample size calculation.</p><div class="service-tools"><span class="tool-tag">Power Analysis</span><span class="tool-tag">RCT</span><span class="tool-tag">Sample Size</span></div></div>
+      <div class="service-card sc-te fade-in"><span class="service-icon">📈</span><div class="service-num">02</div><div class="service-name">Statistical Modelling</div><p class="service-desc">Linear, logistic, mixed-effects, survival and Bayesian models — with full assumption testing, diagnostics and validation.</p><div class="service-tools"><span class="tool-tag">GLM</span><span class="tool-tag">Bayesian</span><span class="tool-tag">Multilevel</span></div></div>
+      <div class="service-card sc-pu fade-in"><span class="service-icon">📊</span><div class="service-num">03</div><div class="service-name">Power BI Dashboards</div><p class="service-desc">Corporate-grade interactive dashboards with dynamic filtering, drill-through, KPI scorecards, and custom visuals built to impress stakeholders.</p><div class="service-tools"><span class="tool-tag">Power BI</span><span class="tool-tag">DAX</span><span class="tool-tag">M Query</span></div></div>
+      <div class="service-card sc-bl fade-in"><span class="service-icon">🔮</span><div class="service-num">04</div><div class="service-name">Predictive Analytics</div><p class="service-desc">Forecasting models and machine learning pipelines grounded in statistical rigour — interpretable, auditable, and production-ready.</p><div class="service-tools"><span class="tool-tag">Time Series</span><span class="tool-tag">ML</span><span class="tool-tag">Python / R</span></div></div>
+      <div class="service-card sc-pk fade-in"><span class="service-icon">🧬</span><div class="service-num">05</div><div class="service-name">Clinical & Health Data</div><p class="service-desc">End-to-end analysis for clinical trials, epidemiological studies, and health economics including safety data and regulatory reporting.</p><div class="service-tools"><span class="tool-tag">Survival</span><span class="tool-tag">ANCOVA</span><span class="tool-tag">CONSORT</span></div></div>
+      <div class="service-card sc-gr fade-in"><span class="service-icon">🎓</span><div class="service-num">06</div><div class="service-name">Thesis & Research Support</div><p class="service-desc">Supporting postgraduate researchers with methodology, analysis, and interpretation — from Masters dissertations to peer-review submissions.</p><div class="service-tools"><span class="tool-tag">SPSS</span><span class="tool-tag">Stata</span><span class="tool-tag">SAS</span></div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- BI & DAX -->
+<div style="position:relative;z-index:2;background:linear-gradient(135deg,var(--dark) 0%,#0d0d1f 50%,var(--dark2) 100%);">
+<div class="full-sec" id="bi-dax">
+  <div style="position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,0.08) 0%,transparent 70%);top:-180px;right:-150px;pointer-events:none;z-index:0;"></div>
+  <div style="position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,0.07) 0%,transparent 70%);bottom:-130px;left:-80px;pointer-events:none;z-index:0;"></div>
+  <div style="max-width:1300px;margin:0 auto;position:relative;z-index:2;">
+    <div class="section-tag fade-in">Business Intelligence</div>
+    <h2 class="section-heading fade-in">Power BI & <span class="grad-text-b">DAX Mastery</span></h2>
+    <p style="color:var(--muted);font-size:1rem;line-height:1.8;max-width:600px;margin-bottom:0;" class="fade-in">From raw SQL tables to boardroom-ready dashboards — I build the full BI stack. Every measure is documented, every visual is purposeful, every insight is actionable.</p>
+    <div class="bi-layout">
+      <div class="bi-features">
+        <div class="bi-feature fade-in"><div class="bi-feature-icon fib">📊</div><div class="bi-feature-text"><h3>Interactive Power BI Reports</h3><p>Multi-page reports with dynamic slicers, cross-filtering, drillthrough pages, and custom tooltips — designed for executive and operational audiences.</p></div></div>
+        <div class="bi-feature fade-in"><div class="bi-feature-icon fip">⚡</div><div class="bi-feature-text"><h3>Advanced DAX Formulas</h3><p>Complex time intelligence, CALCULATE filters, iterators (SUMX, AVERAGEX), semi-additive measures, and optimised data models for fast query performance.</p></div></div>
+        <div class="bi-feature fade-in"><div class="bi-feature-icon fit">🔗</div><div class="bi-feature-text"><h3>Data Modelling & Power Query</h3><p>Star schema design, relationship management, M language transformations, and incremental refresh strategies for enterprise-scale data volumes.</p></div></div>
+        <div class="bi-feature fade-in"><div class="bi-feature-icon fio">📡</div><div class="bi-feature-text"><h3>Real-Time & Scheduled Refresh</h3><p>Power BI Service deployment, workspace management, gateway configuration, and automated data refresh pipelines connecting SQL, Excel, and APIs.</p></div></div>
+        <div class="fade-in" style="background:var(--dark3);border:1px solid var(--line);border-radius:12px;padding:1.15rem;border-top:3px solid var(--blue2);">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.9rem;">📊 Sample BI KPI Scorecard</div>
+          <div class="bi-kpi-row">
+            <div class="bi-kpi"><span class="bi-kpi-n" style="color:var(--orange2)">KSh 4.2M</span><span class="bi-kpi-l">Revenue MTD</span></div>
+            <div class="bi-kpi"><span class="bi-kpi-n" style="color:var(--teal)">↑ 18%</span><span class="bi-kpi-l">vs Last Month</span></div>
+            <div class="bi-kpi"><span class="bi-kpi-n" style="color:var(--purple2)">92.4%</span><span class="bi-kpi-l">Forecast Acc.</span></div>
+            <div class="bi-kpi"><span class="bi-kpi-n" style="color:var(--pink)">0.032</span><span class="bi-kpi-l">p-value</span></div>
+          </div>
+          <div style="display:flex;align-items:flex-end;gap:4px;height:50px;margin-top:.8rem;" id="biMiniChart"></div>
+        </div>
+      </div>
+
+      <div class="dax-panel fade-in">
+        <div class="dax-panel-hdr">
+          <div class="dax-dot"></div><div class="dax-dot"></div><div class="dax-dot"></div>
+          <span class="dax-filename">measures.dax</span>
+        </div>
+        <div class="dax-tabs">
+          <div class="dax-tab active" onclick="showDax(0,this)">YTD Revenue</div>
+          <div class="dax-tab" onclick="showDax(1,this)">MoM Growth</div>
+          <div class="dax-tab" onclick="showDax(2,this)">R² Model</div>
+        </div>
+        <div id="daxContent" class="dax-code"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- EXPERTISE -->
+<div style="position:relative;z-index:2;background:var(--dark2);">
+<div class="full-sec" id="expertise">
+  <div style="max-width:1300px;margin:0 auto;">
+    <div class="section-tag fade-in">Technical Depth</div>
+    <h2 class="section-heading fade-in">Tools & <span class="grad-text-t">Techniques</span></h2>
+    <div class="expertise-grid">
+      <div class="skills-list fade-in" id="skillsList"></div>
+      <div class="tool-grid fade-in">
+        <div class="tool-card tc-r"><span class="tool-logo">🔵</span><span class="tool-name">R</span></div>
+        <div class="tool-card tc-py"><span class="tool-logo">🐍</span><span class="tool-name">Python</span></div>
+        <div class="tool-card tc-pbi"><span class="tool-logo">📊</span><span class="tool-name">Power BI</span></div>
+        <div class="tool-card tc-sql"><span class="tool-logo">🗄️</span><span class="tool-name">SQL</span></div>
+        <div class="tool-card tc-tb"><span class="tool-logo">📉</span><span class="tool-name">Tableau</span></div>
+        <div class="tool-card tc-sp"><span class="tool-logo">🔢</span><span class="tool-name">SPSS</span></div>
+        <div class="tool-card tc-st"><span class="tool-logo">📋</span><span class="tool-name">Stata</span></div>
+        <div class="tool-card tc-sa"><span class="tool-logo">⚙️</span><span class="tool-name">SAS</span></div>
+        <div class="tool-card tc-ex"><span class="tool-logo">🟢</span><span class="tool-name">Excel</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div style="position:relative;z-index:2;background:var(--dark);">
+<div class="full-sec" id="testimonials">
+  <div style="max-width:1300px;margin:0 auto;">
+    <div class="section-tag fade-in">Client Voices</div>
+    <h2 class="section-heading fade-in">What <span class="grad-text-p">Clients Say</span></h2>
+    <div class="testimonials-grid">
+      <div class="testimonial-card tc-or fade-in"><div class="stars">★★★★★</div><p class="testimonial-text">"Dr. Osei transformed months of confused data into a crystal-clear survival analysis that got our study published in a Q1 journal. Rigorous, responsive, and remarkably clear."</p><div class="testimonial-author"><div class="author-avatar av-o">NM</div><div><span class="author-name">Dr. Ngozi Mwangi</span><span class="author-role">Principal Researcher · Nairobi Health Institute</span></div></div></div>
+      <div class="testimonial-card tc-te fade-in"><div class="stars">★★★★★</div><p class="testimonial-text">"The Power BI dashboard she built replaced six weekly Excel reports. Real-time, beautiful, and our leadership team actually uses it to make decisions now."</p><div class="testimonial-author"><div class="author-avatar av-t">AP</div><div><span class="author-name">Aleksander Pawlak</span><span class="author-role">CFO · Warsaw Fintech Group</span></div></div></div>
+      <div class="testimonial-card tc-pu fade-in"><div class="stars">★★★★★</div><p class="testimonial-text">"Her DAX formulas alone saved us 20 hours a week in manual reporting. The data model she built is clean, fast, and our IT team loves maintaining it."</p><div class="testimonial-author"><div class="author-avatar av-p">SC</div><div><span class="author-name">Samuel Chen</span><span class="author-role">Head of Analytics · Singapore Retail Corp</span></div></div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- CONTACT -->
+<div style="position:relative;z-index:2;background:linear-gradient(135deg,var(--dark2) 0%,#0a0a1a 100%);">
+<div class="full-sec" id="contact">
+  <div style="position:absolute;width:550px;height:550px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,0,0.05) 0%,transparent 70%);top:-180px;left:-80px;pointer-events:none;z-index:0;"></div>
+  <div style="max-width:1300px;margin:0 auto;position:relative;z-index:2;">
+    <div class="section-tag fade-in">Work Together</div>
+    <h2 class="section-heading fade-in">Let's Talk About <span class="grad-text-pu">Your Data</span></h2>
+    <div class="contact-layout">
+      <div class="contact-info fade-in">
+        <p>Available for project-based consulting, retainer arrangements, and short-term review engagements. Response within 24 hours.</p>
+        <div class="contact-details">
+          <div class="contact-detail"><div class="cd-icon">✉</div><div><span class="cd-label">Email</span><span class="cd-value">amara@oseistats.com</span></div></div>
+          <div class="contact-detail"><div class="cd-icon">📍</div><div><span class="cd-label">Base</span><span class="cd-value">Nairobi, Kenya — Remote Worldwide</span></div></div>
+          <div class="contact-detail"><div class="cd-icon">🕐</div><div><span class="cd-label">Availability</span><span class="cd-value">Accepting new clients (Q2 2026)</span></div></div>
+          <div class="contact-detail"><div class="cd-icon">🎓</div><div><span class="cd-label">Credentials</span><span class="cd-value">PhD Statistics · Fellow, Royal Statistical Society</span></div></div>
+        </div>
+      </div>
+      <form class="contact-form fade-in" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-field"><label>First Name</label><input type="text" placeholder="James" required></div>
+          <div class="form-field"><label>Last Name</label><input type="text" placeholder="Kariuki" required></div>
+        </div>
+        <div class="form-field"><label>Email Address</label><input type="email" placeholder="james@organisation.org" required></div>
+        <div class="form-field"><label>Organisation</label><input type="text" placeholder="Company, university, or NGO"></div>
+        <div class="form-field"><label>Service Required</label>
+          <select>
+            <option value="">Select a service…</option>
+            <option>Study Design & Sampling</option>
+            <option>Statistical Modelling</option>
+            <option>Power BI Dashboard</option>
+            <option>DAX Development</option>
+            <option>Predictive Analytics</option>
+            <option>Clinical & Health Data</option>
+            <option>Thesis & Research Support</option>
+          </select>
+        </div>
+        <div class="form-field"><label>Project Description</label><textarea placeholder="Describe your data, goal, and any timeline constraints…"></textarea></div>
+        <button type="submit" class="btn-submit">Send Enquiry →</button>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<footer>
+  <div class="footer-logo">Dr. Amara Osei · Stats & BI</div>
+  <ul class="footer-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#bi-dax">BI & DAX</a></li>
+    <li><a href="#expertise">Expertise</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Amara Osei Statistical Consulting</div>
+</footer>
+
+<script>
+// CURSOR
+const cur = document.getElementById('cursor'), ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function animR(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animR);})();
+document.querySelectorAll('a,button,.service-card,.bi-feature,.tool-card,.testimonial-card,.contact-detail').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='22px';cur.style.height='22px';ring.style.width='56px';ring.style.height='56px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='14px';cur.style.height='14px';ring.style.width='40px';ring.style.height='40px';});
+});
+
+// ANIMATED CANVAS BG
+const canvas=document.getElementById('bgCanvas'),ctx=canvas.getContext('2d');
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+resizeCanvas();
+window.addEventListener('resize',resizeCanvas);
+const orbColors=['#FF6B00','#EC4899','#7C3AED','#00BFA5','#2563EB','#F59E0B','#10B981','#A855F7','#38BDF8'];
+const orbs=Array.from({length:8},(_,i)=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:180+Math.random()*280,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,color:orbColors[i%orbColors.length],op:.04+Math.random()*.06}));
+(function drawBg(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  orbs.forEach(o=>{
+    o.x+=o.vx;o.y+=o.vy;
+    if(o.x<-o.r)o.x=canvas.width+o.r;if(o.x>canvas.width+o.r)o.x=-o.r;
+    if(o.y<-o.r)o.y=canvas.height+o.r;if(o.y>canvas.height+o.r)o.y=-o.r;
+    const g=ctx.createRadialGradient(o.x,o.y,0,o.x,o.y,o.r);
+    const hex=Math.floor(o.op*255).toString(16).padStart(2,'0');
+    g.addColorStop(0,o.color+hex);g.addColorStop(1,'transparent');
+    ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+  });
+  requestAnimationFrame(drawBg);
+})();
+
+// FLOATING PARTICLES
+const pCols=['#FF6B00','#EC4899','#00BFA5','#7C3AED','#38BDF8','#F59E0B','#10B981'];
+for(let i=0;i<18;i++){
+  const p=document.createElement('div');p.className='particle';
+  const sz=2+Math.random()*4;
+  p.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}vw;background:${pCols[Math.floor(Math.random()*pCols.length)]};animation-duration:${9+Math.random()*13}s;animation-delay:${Math.random()*9}s;opacity:.45;`;
+  document.body.appendChild(p);
+}
+
+// TICKER
+const tItems=['Statistical Modelling','Power BI','DAX Formulas','R Language','Python Analytics','Bayesian Methods','Time Series','Data Visualisation','Survival Analysis','Machine Learning','SPSS · Stata · SAS','Clinical Trials','Survey Design','Regression','BI Dashboards','Data Strategy'];
+const tEl=document.getElementById('tickerEl');
+[...tItems,...tItems].forEach(t=>{tEl.innerHTML+=`<span class="ticker-item"><span>✦</span>${t}</span>`;});
+
+// DAX EXAMPLES
+const daxExamples=[
+`<span class="dc">-- Year-to-Date Revenue</span>
+<span class="dm">Revenue YTD</span> <span class="do">=</span>
+<span class="df">CALCULATE</span><span class="do">(</span>
+    <span class="df">SUM</span><span class="do">(</span><span class="dv">Sales</span><span class="do">[</span><span class="ds">Amount</span><span class="do">]),</span>
+    <span class="df">DATESYTD</span><span class="do">(</span>
+        <span class="dv">'Date'</span><span class="do">[</span><span class="ds">Date</span><span class="do">],</span>
+        <span class="ds">"31/12"</span>
+    <span class="do">)</span>
+<span class="do">)</span>
+
+<span class="dc">-- Running Total</span>
+<span class="dm">Cumulative Sales</span> <span class="do">=</span>
+<span class="df">CALCULATE</span><span class="do">(</span>
+    <span class="df">SUM</span><span class="do">(</span><span class="dv">Sales</span><span class="do">[</span><span class="ds">Amount</span><span class="do">]),</span>
+    <span class="df">FILTER</span><span class="do">(</span>
+        <span class="df">ALL</span><span class="do">(</span><span class="dv">'Date'</span><span class="do">),</span>
+        <span class="dv">'Date'</span><span class="do">[</span><span class="ds">Date</span><span class="do">]</span> <span class="do">&lt;=</span>
+            <span class="df">MAX</span><span class="do">(</span><span class="dv">'Date'</span><span class="do">[</span><span class="ds">Date</span><span class="do">])</span>
+    <span class="do">)</span>
+<span class="do">)</span>`,
+`<span class="dc">-- Month-over-Month Growth %</span>
+<span class="dm">MoM Growth %</span> <span class="do">=</span>
+<span class="dk">VAR</span> <span class="dv">CurrentMonth</span> <span class="do">=</span>
+    <span class="df">SUM</span><span class="do">(</span><span class="dv">Sales</span><span class="do">[</span><span class="ds">Amount</span><span class="do">])</span>
+<span class="dk">VAR</span> <span class="dv">PrevMonth</span> <span class="do">=</span>
+    <span class="df">CALCULATE</span><span class="do">(</span>
+        <span class="df">SUM</span><span class="do">(</span><span class="dv">Sales</span><span class="do">[</span><span class="ds">Amount</span><span class="do">]),</span>
+        <span class="df">PREVIOUSMONTH</span><span class="do">(</span><span class="dv">'Date'</span><span class="do">[</span><span class="ds">Date</span><span class="do">])</span>
+    <span class="do">)</span>
+<span class="dk">RETURN</span>
+<span class="df">IF</span><span class="do">(</span>
+    <span class="dv">PrevMonth</span> <span class="do">&lt;&gt;</span> <span class="dn">0</span><span class="do">,</span>
+    <span class="df">DIVIDE</span><span class="do">(</span>
+        <span class="dv">CurrentMonth</span> <span class="do">-</span> <span class="dv">PrevMonth</span><span class="do">,</span>
+        <span class="dv">PrevMonth</span>
+    <span class="do">),</span>
+    <span class="df">BLANK</span><span class="do">()</span>
+<span class="do">)</span>`,
+`<span class="dc">-- R-Squared (DAX)</span>
+<span class="dm">R Squared</span> <span class="do">=</span>
+<span class="dk">VAR</span> <span class="dv">MeanY</span> <span class="do">=</span>
+    <span class="df">AVERAGEX</span><span class="do">(</span><span class="dv">Data</span><span class="do">,</span><span class="dv">Data</span><span class="do">[</span><span class="ds">Actual</span><span class="do">])</span>
+<span class="dk">VAR</span> <span class="dv">SStot</span> <span class="do">=</span>
+    <span class="df">SUMX</span><span class="do">(</span><span class="dv">Data</span><span class="do">,</span>
+        <span class="do">(</span><span class="dv">Data</span><span class="do">[</span><span class="ds">Actual</span><span class="do">]</span><span class="do">-</span><span class="dv">MeanY</span><span class="do">)^</span><span class="dn">2</span>
+    <span class="do">)</span>
+<span class="dk">VAR</span> <span class="dv">SSres</span> <span class="do">=</span>
+    <span class="df">SUMX</span><span class="do">(</span><span class="dv">Data</span><span class="do">,</span>
+        <span class="do">(</span><span class="dv">Data</span><span class="do">[</span><span class="ds">Actual</span><span class="do">]</span><span class="do">-</span>
+         <span class="dv">Data</span><span class="do">[</span><span class="ds">Predicted</span><span class="do">])^</span><span class="dn">2</span>
+    <span class="do">)</span>
+<span class="dk">RETURN</span>
+    <span class="dn">1</span> <span class="do">-</span> <span class="df">DIVIDE</span><span class="do">(</span><span class="dv">SSres</span><span class="do">,</span><span class="dv">SStot</span><span class="do">)</span>`
+];
+function showDax(i,el){document.querySelectorAll('.dax-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('daxContent').innerHTML=daxExamples[i];}
+document.getElementById('daxContent').innerHTML=daxExamples[0];
+
+// LIVE KPIs
+function animateKPIs(){
+  const k1=document.getElementById('kpi1'),k2=document.getElementById('kpi2'),k3=document.getElementById('kpi3');
+  if(k1)k1.textContent=(91+Math.random()*7).toFixed(1)+'%';
+  if(k2)k2.textContent=Math.floor(Math.random()*5+10);
+  if(k3)k3.textContent='0.0'+Math.floor(Math.random()*49+1);
+}
+animateKPIs();setInterval(animateKPIs,2600);
+
+// MINI BAR CHARTS
+const barCols=['#FF6B00','#EC4899','#7C3AED','#00BFA5','#2563EB','#F59E0B','#10B981','#38BDF8','#FF8C38','#A855F7','#EF4444','#0EA5E9'];
+function buildChart(id,n){
+  const el=document.getElementById(id);if(!el)return[];
+  el.innerHTML='';
+  return Array.from({length:n},(_,i)=>{
+    const b=document.createElement('div');
+    const h=20+Math.random()*80;
+    b.style.cssText=`flex:1;border-radius:3px 3px 0 0;background:${barCols[i%barCols.length]};height:${h}%;transition:height .9s cubic-bezier(.34,1.56,.64,1);opacity:.85;`;
+    el.appendChild(b);return b;
+  });
+}
+const heroBars=buildChart('heroBarChart',12);
+const biBars=buildChart('biMiniChart',10);
+function refreshBars(bars){if(bars)bars.forEach(b=>{b.style.height=(20+Math.random()*80)+'%';});}
+setInterval(()=>{refreshBars(heroBars);refreshBars(biBars);},2000);
+
+// SKILLS
+const skills=[
+  {n:'R (tidyverse, ggplot2, Shiny)',p:97,c:'linear-gradient(90deg,#276DC3,#38BDF8)'},
+  {n:'Python (pandas, scikit-learn)',p:91,c:'linear-gradient(90deg,#3776AB,#00BFA5)'},
+  {n:'Power BI & DAX',p:94,c:'linear-gradient(90deg,#F2C811,#FF6B00)'},
+  {n:'SQL & Data Modelling',p:88,c:'linear-gradient(90deg,#E38C00,#EC4899)'},
+  {n:'Bayesian Methods (Stan/brms)',p:85,c:'linear-gradient(90deg,#7C3AED,#A855F7)'},
+  {n:'Survival & Longitudinal Analysis',p:90,c:'linear-gradient(90deg,#10B981,#38BDF8)'},
+  {n:'SPSS / Stata / SAS',p:87,c:'linear-gradient(90deg,#DD0000,#FF8C38)'},
+  {n:'Data Visualisation & Dashboards',p:95,c:'linear-gradient(90deg,#FF6B00,#EC4899)'},
+];
+const sl=document.getElementById('skillsList');
+sl.innerHTML=skills.map(s=>`<div class="skill-item"><div class="skill-header"><span class="skill-name">${s.n}</span><span class="skill-pct">${s.p}%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-pct="${s.p}" style="background:${s.c}"></div></div></div>`).join('');
+
+// INTERSECTION OBSERVER
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      e.target.querySelectorAll('.skill-bar-fill').forEach(b=>{b.style.width=b.dataset.pct+'%';});
+    }
+  });
+},{threshold:.12});
+document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+const expSec=document.getElementById('expertise');
+if(expSec){const o2=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)document.querySelectorAll('.skill-bar-fill').forEach(b=>{b.style.width=b.dataset.pct+'%';});});},{threshold:.1});o2.observe(expSec);}
+
+// FORM
+function handleSubmit(e){e.preventDefault();const btn=e.target.querySelector('.btn-submit');btn.textContent='✓ Sent! I\'ll be in touch within 24 hrs';btn.disabled=true;}
+
+// NAV
+window.addEventListener('scroll',()=>{document.querySelector('nav').style.boxShadow=window.scrollY>60?'0 6px 40px rgba(255,107,0,0.4)':'0 4px 30px rgba(255,107,0,0.5)';});
+</script>
+</body>
+</html>
